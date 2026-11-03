@@ -1,0 +1,484 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Question From Someone</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@300;400;500;600&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background: #080b16;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* Animated background */
+
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+    radial-gradient(circle at 20% 20%, #47244e 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, #182c52 0%, transparent 40%),
+    linear-gradient(135deg, #080b16, #111629, #080b16);
+    background-size: 200% 200%;
+    animation: gradient 12s ease infinite;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.glow {
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: #a45cba;
+    filter: blur(120px);
+    opacity: .17;
+    z-index: -1;
+    animation: float 8s infinite alternate ease-in-out;
+}
+
+.glow.one {
+    top: 10%;
+    left: -100px;
+}
+
+.glow.two {
+    bottom: 0;
+    right: -100px;
+    background: #507ce5;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    to {
+        transform: translate(100px, 80px);
+    }
+}
+
+/* Main container */
+
+.container {
+    width: 100%;
+    max-width: 650px;
+    min-height: 100vh;
+    margin: auto;
+    padding: 30px 22px 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Header */
+
+.tag {
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: #c39ad4;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(35px, 8vw, 57px);
+    font-weight: 400;
+    text-align: center;
+    line-height: 1.2;
+    background: linear-gradient(120deg, #fff, #d6a8e6, #fff);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.subtitle {
+    margin-top: 17px;
+    color: #a7a9b9;
+    font-size: 13px;
+    text-align: center;
+    font-weight: 300;
+}
+
+/* Input card */
+
+.input-card {
+    width: 100%;
+    margin-top: 48px;
+    padding: 30px 24px;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 20px;
+    backdrop-filter: blur(18px);
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    text-align: center;
+}
+
+.input-card label {
+    display: block;
+    color: #d5c6df;
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+
+input {
+    width: 100%;
+    min-width: 0;
+    padding: 15px;
+    border: 1px solid #514263;
+    outline: none;
+    border-radius: 12px;
+    background: rgba(0,0,0,.25);
+    color: white;
+    font-size: 17px;
+    text-align: center;
+    letter-spacing: 5px;
+}
+
+input:focus {
+    border-color: #c38cdb;
+    box-shadow: 0 0 15px #b16bd533;
+}
+
+.open-btn {
+    padding: 0 22px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #a65dc0, #7550b8);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: .3s;
+    white-space: nowrap;
+}
+
+.open-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px #a65dc055;
+}
+
+#error {
+    color: #ff8f9b;
+    font-size: 12px;
+    margin-top: 13px;
+    min-height: 18px;
+}
+
+/* Message section */
+
+.message-section {
+    display: none;
+    width: 100%;
+    margin-top: 35px;
+    padding: 30px 25px;
+    background: rgba(255,255,255,.055);
+    border: 1px solid rgba(216,178,231,.2);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    animation: reveal .9s ease forwards;
+}
+
+@keyframes reveal {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-heading {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    color: #d8a9e7;
+    font-size: 25px;
+    margin-bottom: 25px;
+}
+
+.handwriting {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(23px, 5vw, 29px);
+    line-height: 1.7;
+    color: #f1e9f4;
+    white-space: pre-wrap;
+    min-height: 180px;
+}
+
+.cursor {
+    display: inline-block;
+    width: 2px;
+    height: 25px;
+    background: #d69ce9;
+    vertical-align: middle;
+    animation: blink .7s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.signature {
+    text-align: right;
+    margin-top: 20px;
+    color: #bca2ca;
+    font-family: 'Caveat', cursive;
+    font-size: 23px;
+}
+
+/* WhatsApp floating button */
+
+.whatsapp {
+    display: none;
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: calc(100% - 40px);
+    max-width: 350px;
+    padding: 15px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(135deg, #168d59, #20b76b);
+    box-shadow: 0 8px 30px #20b76b55;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    transition: .3s;
+    animation: reveal .7s ease;
+}
+
+.whatsapp:hover {
+    box-shadow: 0 8px 35px #20b76b88;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+.whatsapp span {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+/* Footer */
+
+.footer {
+    margin-top: 35px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #777b91;
+    text-align: center;
+}
+
+@media(max-width: 400px) {
+    .input-card {
+        padding: 24px 16px;
+    }
+
+    .open-btn {
+        padding: 0 15px;
+    }
+
+    .message-section {
+        padding: 25px 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+<div class="glow one"></div>
+<div class="glow two"></div>
+
+<main class="container">
+
+    <div class="tag">A Little Mystery</div>
+
+    <h1>A Massage<br>From Someone.</h1>
+
+    <p class="subtitle">
+        Sometimes, a simple question can say a lot.
+    </p>
+
+    <div class="input-card" id="inputCard">
+
+        <label for="secretCode">
+            Hi,<br>
+            Enter the secret code to reveal the message.
+        </label>
+
+        <div class="input-group">
+            <input
+                type="password"
+                id="secretCode"
+                placeholder="•••"
+                maxlength="3"
+                inputmode="numeric"
+            >
+
+            <button class="open-btn" onclick="openMessage()">
+                Reveal
+            </button>
+        </div>
+
+        <p id="error"></p>
+
+    </div>
+
+    <section class="message-section" id="messageSection">
+
+        <h2 class="message-heading">A Little Confession</h2>
+
+        <div class="handwriting">
+            <span id="typedText"></span><span class="cursor" id="cursor"></span>
+        </div>
+
+        <div class="signature" id="signature" style="display:none;">
+            — Someone
+        </div>
+
+    </section>
+
+    <div class="footer">
+        SOME THINGS ARE BETTER LEFT UNSAID... OR MAYBE NOT.
+    </div>
+
+</main>
+
+<a
+    href="#"
+    class="whatsapp"
+    id="whatsappBtn"
+    target="_blank"
+    rel="noopener noreferrer"
+>
+    <span>✉</span> Send my Roll Number
+</a>
+
+<script>
+
+// ===== CUSTOM SETTINGS =====
+
+const SECRET_CODE = "128";
+
+// Replace with your WhatsApp number.
+// Include country code, without + sign.
+
+const WHATSAPP_NUMBER = "8801346492656";
+
+// ===== MESSAGE =====
+
+const message = `I think I like you. I don’t know if you like me back, but I’ve become quite curious to find out.
+
+So, please confirm this for me: if you know who I am, send me my roll number via WhatsApp.
+
+If it matches, then I’ll know for sure.`;
+
+// ===== OPEN MESSAGE =====
+
+let started = false;
+
+function openMessage() {
+
+    const input = document.getElementById("secretCode");
+    const error = document.getElementById("error");
+
+    if (input.value !== SECRET_CODE) {
+        error.textContent = "That doesn't seem right. Try again.";
+        input.value = "";
+        return;
+    }
+
+    error.textContent = "";
+
+    if (started) return;
+    started = true;
+
+    document.getElementById("inputCard").style.display = "none";
+
+    const section = document.getElementById("messageSection");
+    section.style.display = "block";
+
+    document.getElementById("whatsappBtn").style.display = "block";
+
+    // Start handwriting animation
+    typeMessage();
+
+}
+
+// ===== HANDWRITING EFFECT =====
+
+let index = 0;
+
+function typeMessage() {
+
+    const textElement = document.getElementById("typedText");
+    const cursor = document.getElementById("cursor");
+
+    if (index < message.length) {
+
+        textElement.textContent += message.charAt(index);
+
+        index++;
+
+        // Natural writing speed
+        let speed = Math.random() * 45 + 35;
+
+        setTimeout(typeMessage, speed);
+
+    } else {
+
+        cursor.style.display = "none";
+
+        document.getElementById("signature").style.display = "block";
+
+    }
+
+}
+
+// ===== WHATSAPP LINK =====
+
+const whatsappMessage =
+    "Hi! I think I know who you are. Your roll number is: ";
+
+document.getElementById("whatsappBtn").href =
+    "https://wa.me/" + WHATSAPP_NUMBER +
+    "?text=" + encodeURIComponent(whatsappMessage);
+
+// Enter key support
+
+document.getElementById("secretCode").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        openMessage();
+    }
+});
+
+</script>
+
+</body>
+</html>
